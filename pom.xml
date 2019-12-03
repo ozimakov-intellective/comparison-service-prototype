@@ -18,6 +18,7 @@
 
     <modules>
         <module>csapp</module>
+        <module>csui</module>
     </modules>
 
     <dependencyManagement>
