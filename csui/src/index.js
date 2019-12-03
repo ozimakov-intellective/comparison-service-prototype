@@ -10,7 +10,30 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route
+} from "react-router-dom";
 import axios from 'axios'
+
+function AppRouter(props) {
+    return (
+        <Router>
+            <Switch>
+                <Route path="/login">
+                    <Login/>
+                </Route>
+                <Route path="/error">
+                    <Login error='true'/>
+                </Route>
+                <Route path="/app">
+                    <App/>
+                </Route>
+            </Switch>
+        </Router>
+    );
+}
 
 class App extends React.Component {
 
@@ -18,8 +41,7 @@ class App extends React.Component {
         super(props, context);
         this.state = {
             currentPage: 'upload',
-            result: [
-            ]
+            result: []
         };
     }
 
@@ -31,6 +53,8 @@ class App extends React.Component {
                 return <ResultPage handler={() => this.reset()} data={this.state.result}/>;
             case 'wait':
                 return <WaitingPage/>;
+            case 'error':
+                return <ErrorPage handler={() => this.reset()} error={this.state.error}/>;
             default:
                 return <Box>Undefined state: {this.state.currentPage}</Box>;
         }
@@ -41,25 +65,21 @@ class App extends React.Component {
         let form_data = new FormData();
         Array.from(files).forEach(f => form_data.append("files", f));
 
-        let url = '/compare';
+        let url = '/api/compare';
         axios.post(url, form_data, {
             headers: {
                 'content-type': 'multipart/form-data'
             }
         })
-        .then(res => {
-            console.log(res);
-            if (res && res.status === 200) {
+            .then(res => {
                 this.setState({
                     result: res.data,
                     currentPage: "result"
                 });
-            } else {
-                alert("Error occured");
-            }
-
-        })
-        .catch(err => console.log(err))
+            }).catch(err => this.setState({
+                currentPage: "error",
+                error: err.message
+            }));
     }
 
     reset() {
@@ -150,9 +170,57 @@ function WaitingPage(props) {
     );
 }
 
+function ErrorPage(props) {
+    return (
+        <Box display="flex" justifyContent="center">
+            <Paper>
+                <Box m={5}>
+                    Error occured: {props.error}
+                </Box>
+                <Box m={5}>
+                    <Button variant="contained" color="secondary"
+                        onClick={props.handler}>Go back</Button>
+                </Box>
+            </Paper>
+        </Box>
+    )
+}
+
+function Login(props) {
+    return (
+        <Box display="flex" justifyContent="center">
+            <Paper>
+                <form action="/auth" method="post">
+                    <Box m={5}>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Login</td>
+                                        <td><input name="username"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Password</td>
+                                        <td><input name="password" type="password"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                    </Box>
+                    <Box m={5}>
+                        <div style={{color: 'red'}}>{props.error ? "Incorrect credentials. Try again." : ""}</div>
+                    </Box>
+                    <Box m={5}>
+                        <Button variant="contained" color="primary" type="submit">Log in</Button>
+                    </Box>
+                </form>
+            </Paper>
+        </Box>
+    );
+}
+
+
 // ========================================
 
 ReactDOM.render(
-    <App/>,
+    <AppRouter/>,
     document.getElementById('root')
 );

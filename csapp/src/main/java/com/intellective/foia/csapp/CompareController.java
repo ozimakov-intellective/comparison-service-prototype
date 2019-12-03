@@ -18,7 +18,7 @@ public class CompareController {
     @Autowired
     ComparisonService comparisonService;
 
-    @PostMapping(value = "/compare", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/api/compare", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public List<ComparableDocument> compare(@RequestParam("files") MultipartFile[] files) {
         List<ComparableDocument> documents = Arrays.stream(files)
                 .map(this::convertToDocument)
