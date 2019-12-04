@@ -21,6 +21,23 @@
         <module>csui</module>
     </modules>
 
+    <profiles>
+        <profile>
+            <id>full</id>
+            <modules>
+                <module>csapp</module>
+                <module>csui</module>
+                <module>deployment</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>deploy</id>
+            <modules>
+                <module>deployment</module>
+            </modules>
+        </profile>
+    </profiles>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -90,9 +107,29 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.1.1</version>
+                </plugin>
+                <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>${spring.boot.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>0.31.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
