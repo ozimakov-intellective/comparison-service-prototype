@@ -21,13 +21,10 @@ function AppRouter(props) {
     return (
         <Router>
             <Switch>
-                <Route path="/login">
-                    <Login/>
+                <Route path="/logon">
+                    <Login error={window.location.search.indexOf("error=1") !== -1} />
                 </Route>
-                <Route path="/error">
-                    <Login error='true'/>
-                </Route>
-                <Route path="/app">
+                <Route path="/">
                     <App/>
                 </Route>
             </Switch>
@@ -190,7 +187,7 @@ function Login(props) {
     return (
         <Box display="flex" justifyContent="center">
             <Paper>
-                <form action="/auth" method="post">
+                <form action="login" method="post">
                     <Box m={5}>
                             <table>
                                 <tbody>
