@@ -27,13 +27,13 @@
             <modules>
                 <module>csapp</module>
                 <module>csui</module>
-                <module>deployment</module>
+                <module>docker</module>
             </modules>
         </profile>
         <profile>
-            <id>deploy</id>
+            <id>docker</id>
             <modules>
-                <module>deployment</module>
+                <module>docker</module>
             </modules>
         </profile>
     </profiles>
