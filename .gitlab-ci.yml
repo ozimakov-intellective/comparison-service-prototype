@@ -48,7 +48,9 @@ dockerize:
 
 stage:
   stage: stage
-  image: bitnami/kubectl:1.14.3
+  image:
+    name: bitnami/kubectl:1.14.3
+    entrypoint: [""]
   script:
     - kubectl config set-cluster k8s --server="$KUBE_URL" --insecure-skip-tls-verify=true
     - kubectl config set-credentials admin --token="$KUBE_TOKEN"
