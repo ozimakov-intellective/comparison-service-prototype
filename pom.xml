@@ -99,7 +99,6 @@
                 <scope>test</scope>
             </dependency>
 
-
         </dependencies>
     </dependencyManagement>
 
@@ -134,5 +133,17 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>gitlab-maven</id>
+            <url>https://gitlab.devops.intellectivelab.com/api/v4/projects/11/packages/maven</url>
+        </repository>
+        <snapshotRepository>
+            <id>gitlab-maven</id>
+            <url>https://gitlab.devops.intellectivelab.com/api/v4/projects/11/packages/maven</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 
 </project>
