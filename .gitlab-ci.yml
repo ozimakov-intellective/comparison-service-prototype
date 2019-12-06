@@ -49,8 +49,7 @@ dockerize:
 stage:
   stage: stage
   image:
-    name: bitnami/kubectl:1.14.3
-    entrypoint: [""]
+    name: gcr.io/cloud-builders/kubectl:latest
   script:
     - kubectl config set-cluster k8s --server="$KUBE_URL" --insecure-skip-tls-verify=true
     - kubectl config set-credentials admin --token="$KUBE_TOKEN"
