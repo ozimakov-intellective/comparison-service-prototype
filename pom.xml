@@ -16,12 +16,17 @@
         <reactor.version>3.3.0.RELEASE</reactor.version>
     </properties>
 
-    <modules>
-        <module>csapp</module>
-        <module>csui</module>
-    </modules>
-
     <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>csapp</module>
+                <module>csui</module>
+            </modules>
+        </profile>
         <profile>
             <id>full</id>
             <modules>
@@ -31,7 +36,7 @@
             </modules>
         </profile>
         <profile>
-            <id>docker</id>
+            <id>docker-only</id>
             <modules>
                 <module>docker</module>
             </modules>

@@ -42,6 +42,6 @@ dockerize:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
   script:
-    - mvn $MAVEN_CLI_OPTS docker:push -P docker
+    - mvn $MAVEN_CLI_OPTS docker:build docker:push -P docker-only
   only:
     - master
