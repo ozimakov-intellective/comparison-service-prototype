@@ -13,7 +13,7 @@ stages:
   - test
   - deploy
   - dockerize
-# - publish
+  - stage
 
 build:
   stage: build
@@ -43,5 +43,17 @@ dockerize:
     DOCKER_TLS_CERTDIR: ""
   script:
     - mvn $MAVEN_CLI_OPTS package docker:push -P docker-only
+  only:
+    - master
+
+stage:
+  stage: stage
+  image: bitnami/kubectl:1.14.3
+  script:
+    - kubectl config set-cluster k8s --server="$KUBE_URL" --insecure-skip-tls-verify=true
+    - kubectl config set-credentials admin --token="$KUBE_TOKEN"
+    - kubectl config set-context default --cluster=k8s --user=admin
+    - kubectl config use-context default
+    - kubectl apply -f "$CI_PROJECT_DIR/docker/src/main/kubernetes.yaml"
   only:
     - master

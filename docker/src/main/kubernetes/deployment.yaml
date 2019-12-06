@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foia-csapp
+  labels:
+    app: foia-csapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: foia-csapp
+  template:
+    metadata:
+      labels:
+        app: foia-csapp
+    spec:
+      containers:
+        - name: foia-csapp-container
+          image: docker.devops.intellectivelab.com/ozimakov/comparison-service-prototype:latest
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 2
+            periodSeconds: 2
+          readinessProbe:
+              httpGet:
+                path: /
+                port: 8080
+              initialDelaySeconds: 2
+              periodSeconds: 2
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "200m"
+          imagePullPolicy: Always
+      imagePullSecrets:
+        - name: regcred
