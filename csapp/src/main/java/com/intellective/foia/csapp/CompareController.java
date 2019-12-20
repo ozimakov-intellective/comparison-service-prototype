@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,24 +15,25 @@ import java.util.stream.Collectors;
 public class CompareController {
 
     @Autowired
+    TextExtractorFactory textExtractorFactory;
+
+    @Autowired
     ComparisonService comparisonService;
 
     @PostMapping(value = "/api/compare", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public List<ComparableDocument> compare(@RequestParam("files") MultipartFile[] files) {
-        List<ComparableDocument> documents = Arrays.stream(files)
+        return comparisonService.compareDocuments(() -> Arrays.stream(files)
                 .map(this::convertToDocument)
                 .filter(doc -> doc != null)
-                .collect(Collectors.toList());
-        comparisonService.compareDocuments(documents);
-        return documents;
+                .collect(Collectors.toList()));
     }
 
     private ComparableDocument convertToDocument(MultipartFile multipartFile) {
         try {
-            return new ComparableDocument(multipartFile.getOriginalFilename(), multipartFile.getInputStream());
-        } catch (IOException e) {
+            return new ComparableDocument(multipartFile.getOriginalFilename(), textExtractorFactory.getTextExtractor(multipartFile.getInputStream()));
+        } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            throw new RuntimeException("Unable to extract documents from request");
         }
     }
 

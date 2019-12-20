@@ -46,15 +46,15 @@ dockerize:
   only:
     - master
 
-stage:
-  stage: stage
-  image:
-    name: gcr.io/cloud-builders/kubectl:latest
-  script:
-    - kubectl config set-cluster k8s --server="$KUBE_URL" --insecure-skip-tls-verify=true
-    - kubectl config set-credentials admin --token="$KUBE_TOKEN"
-    - kubectl config set-context default --cluster=k8s --user=admin
-    - kubectl config use-context default
-    - kubectl apply -f "$CI_PROJECT_DIR/docker/src/main/kubernetes.yaml"
-  only:
-    - master
+#stage:
+#  stage: stage
+#  image:
+#    name: gcr.io/cloud-builders/kubectl:latest
+#  script:
+#    - kubectl config set-cluster k8s --server="$KUBE_URL" --insecure-skip-tls-verify=true
+#    - kubectl config set-credentials admin --token="$KUBE_TOKEN"
+#    - kubectl config set-context default --cluster=k8s --user=admin
+#    - kubectl config use-context default
+#    - kubectl apply -f "$CI_PROJECT_DIR/docker/src/main/kubernetes.yaml"
+#  only:
+#    - master

@@ -15,29 +15,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Service
 public class IntuitFuzzyMatcherComparisonServiceImpl implements ComparisonService {
 
-    private Tika tika = new Tika();
     private MatchService matchService = new MatchService();
 
-    public void compareDocuments(List<ComparableDocument> documents) {
-        List<Document> matchDocs = documents.stream().map(doc -> {
-            try {
-                return new Document.Builder(doc.getId())
-                        .addElement(
-                                new Element.Builder().setType(ElementType.TEXT)
-                                        .setValue(tika.parseToString(doc.getContentStream()))
-                                        .createElement())
-                        .setThreshold(0.5)
-                        .createDocument();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }).filter(doc -> doc != null).collect(Collectors.toList());
+    @Override
+    public List<ComparableDocument> compareDocuments(Supplier<List<ComparableDocument>> docListSupplier) {
+        List<ComparableDocument> documents = docListSupplier.get();
+        List<Document> matchDocs = documents.stream().map(doc -> new Document.Builder(doc.getId())
+                .addElement(
+                        new Element.Builder().setType(ElementType.TEXT)
+                                .setValue(doc.getContentSupplier().get())
+                                .createElement())
+                .setThreshold(0.5)
+                .createDocument()
+        ).filter(doc -> doc != null).collect(Collectors.toList());
 
         Map<String,ComparableDocument> documentMap = documents.stream().collect(Collectors.toMap(ComparableDocument::getId, Function.identity()));
         Map<Document, List<Match<Document>>> allMatches = matchService.applyMatch(matchDocs);
@@ -72,7 +68,7 @@ public class IntuitFuzzyMatcherComparisonServiceImpl implements ComparisonServic
             }
         });
 
-
+        return documents;
     }
 
 }

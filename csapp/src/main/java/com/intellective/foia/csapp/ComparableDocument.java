@@ -3,26 +3,28 @@ package com.intellective.foia.csapp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.InputStream;
+import java.util.function.Supplier;
 
 public class ComparableDocument {
 
     private final String id;
-    @JsonIgnore
-    private final InputStream contentStream;
     private String groupId;
     private Double ratio;
 
-    public ComparableDocument(String id, InputStream contentStream) {
+    @JsonIgnore
+    private final Supplier<String> contentSupplier;
+
+    public ComparableDocument(String id, Supplier<String> contentSupplier) {
         this.id = id;
-        this.contentStream = contentStream;
+        this.contentSupplier = contentSupplier;
     }
 
     public String getId() {
         return id;
     }
 
-    public InputStream getContentStream() {
-        return contentStream;
+    public Supplier<String> getContentSupplier() {
+        return contentSupplier;
     }
 
     public String getGroupId() {
