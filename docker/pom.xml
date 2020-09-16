@@ -82,7 +82,7 @@
                     <useColor>true</useColor>
                     <images>
                         <image>
-                            <name>docker.devops.intellectivelab.com/ozimakov/comparison-service-prototype</name>
+                            <name>registry.intellective.com/foia/comparison-service-prototype</name>
                             <build>
                                 <tags>
                                     <tag>${project.version}</tag>

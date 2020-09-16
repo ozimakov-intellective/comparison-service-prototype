@@ -37,4 +37,4 @@ spec:
               cpu: "200m"
           imagePullPolicy: Always
       imagePullSecrets:
-        - name: regcred
+        - name: registry.intellective.com

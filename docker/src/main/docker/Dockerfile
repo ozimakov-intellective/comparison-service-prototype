@@ -5,4 +5,4 @@ WORKDIR /opt/csapp
 COPY csapp*.jar /opt/csapp/csapp.jar
 
 EXPOSE 8080/tcp
-ENTRYPOINT ["java","-Xmx950m","-jar","csapp.jar"]
+ENTRYPOINT ["java","-jar","csapp.jar"]
